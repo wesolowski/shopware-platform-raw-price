@@ -9,9 +9,6 @@
             "name": "Rafal Wesolowski"
         }
     ],
-    "require": {
-        "shopware/platform": "dev-master"
-    },
     "extra": {
         "shopware-plugin-class": "Raw\\CustomerPrice\\CustomerPrice",
         "label": {
