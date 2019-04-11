@@ -4,6 +4,7 @@
 namespace Raw\CustomerPrice\Import\Communication\Command;
 
 use Raw\CustomerPrice\Custom\CustomPriceEntity;
+use Raw\CustomerPrice\Import\Communication\Messenger\Message\QueuePriceImportMessage;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Symfony\Component\Console\Command\Command;
@@ -11,6 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class PriceImport extends Command
 {
@@ -20,11 +22,18 @@ class PriceImport extends Command
     private $container;
 
     /**
-     * @param $container
+     * @var MessageBusInterface
      */
-    public function __construct($container)
+    private $messageBus;
+
+    /**
+     * @param $container
+     * @param MessageBusInterface $messageBus
+     */
+    public function __construct($container, MessageBusInterface $messageBus)
     {
         $this->container = $container;
+        $this->messageBus = $messageBus;
         parent::__construct();
     }
 
@@ -36,7 +45,11 @@ class PriceImport extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $value = [['qu' => 1, 'price' => 12.20,]];
+        $importData = [['qu' => 1, 'price' => 12.20]];
+
+        $this->messageBus->dispatch(new QueuePriceImportMessage($importData));
+
+        return;
         $context = \Shopware\Core\Framework\Context::createDefaultContext();
         $customerPriceRepo = $this->container->get('customer_price.repository');
         /** @var EntitySearchResult $entities */
