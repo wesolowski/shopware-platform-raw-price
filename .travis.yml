@@ -17,7 +17,6 @@ before_script:
   - if [[ "$(php --version | grep -cim1 xdebug)" -ge 1 ]]; then phpenv config-rm xdebug.ini; fi
   - git clone https://github.com/shopware/development.git
   - cd development
-  - git clone https://github.com/shopware/platform.git
   - travis_retry composer install --optimize-autoloader --no-suggest --no-scripts
 
 
