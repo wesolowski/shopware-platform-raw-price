@@ -1,0 +1,31 @@
+{
+    "name": "wesolowski/raw-price",
+    "description": "Custom Price",
+    "version": "v1.0.0",
+    "type": "shopware-platform-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rafal Wesolowski"
+        }
+    ],
+    "require": {
+        "shopware/platform": "dev-master"
+    },
+    "extra": {
+        "shopware-plugin-class": "Raw\\CustomerPrice\\CustomerPrice",
+        "label": {
+            "de_DE": "Plugin mit einer individuellen Entität",
+            "en_GB": "Custom entity plugin"
+        },
+        "description": {
+            "de_DE": "Plugin mit einer individuellen Entität",
+            "en_GB": "Custom entity plugin"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Raw\\CustomerPrice\\": "src/"
+        }
+    }
+}
