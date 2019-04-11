@@ -7,6 +7,8 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityIdTrait;
 
 class CustomPriceEntity extends Entity
 {
+    use EntityIdTrait;
+
     /**
      * @var string
      */

@@ -16,6 +16,7 @@ class Migration1552484872Custom extends MigrationStep
     {
         $sql = <<<SQL
     CREATE TABLE `customer_price` (
+        `id` BINARY(16) NOT NULL,
         `key` VARCHAR(60) NOT NULL COLLATE 'utf8mb4_unicode_ci',
         `value` JSON NOT NULL,
         `created_at` DATETIME(3) NOT NULL,

@@ -4,7 +4,10 @@ namespace Raw\CustomerPrice\Custom;
 
 use Shopware\Core\Framework\DataAbstractionLayer\EntityDefinition;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\CreatedAtField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\PrimaryKey;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\Flag\Required;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\IdField;
+use Shopware\Core\Framework\DataAbstractionLayer\Field\JsonField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\StringField;
 use Shopware\Core\Framework\DataAbstractionLayer\Field\UpdatedAtField;
 use Shopware\Core\Framework\DataAbstractionLayer\FieldCollection;
@@ -19,7 +22,8 @@ class CustomPriceEntityDefinition extends EntityDefinition
     protected static function defineFields(): FieldCollection
     {
         return new FieldCollection([
-            (new StringField('key', 'key'))->addFlags(new Required()),
+            (new IdField('id', 'id'))->addFlags(new PrimaryKey(), new Required()),
+            new StringField('key', 'key'),
             new JsonField('value', 'value'),
             new CreatedAtField(),
             new UpdatedAtField(),
@@ -28,7 +32,7 @@ class CustomPriceEntityDefinition extends EntityDefinition
 
     public static function getCollectionClass(): string
     {
-        return RawCustomPriceEntityCollection::class;
+        return CustomPriceEntityCollection::class;
     }
 
     public static function getEntityClass(): string
