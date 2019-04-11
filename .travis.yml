@@ -14,6 +14,7 @@ env:
     - PLUGIN_DIRECTORY=${SHOPWARE_DIRECTORY}/custom/plugins
 
 before_script:
+  - composer config github-oauth.github.com ${GH_TOKEN}
   - if [[ "$(php --version | grep -cim1 xdebug)" -ge 1 ]]; then phpenv config-rm xdebug.ini; fi
   - git clone https://github.com/shopware/development.git
   - cd development
