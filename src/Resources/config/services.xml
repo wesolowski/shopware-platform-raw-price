@@ -18,6 +18,7 @@
         <service class="Raw\CustomerPrice\Import\Communication\Event\ProductPageLoadedEvent"
                  id="raw.customer_price.import.communication.event.product_page_loaded_event">
             <tag name="kernel.event_subscriber"/>
+            <argument type="service" id="customer_price.repository"/>
         </service>
 
 

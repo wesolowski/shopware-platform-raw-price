@@ -6,6 +6,7 @@ namespace Raw\CustomerPrice\Import\Communication\Command;
 use Raw\CustomerPrice\Custom\CustomPriceEntity;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\Uuid\Uuid;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -40,10 +41,12 @@ class PriceImport extends Command
         $context = \Shopware\Core\Framework\Context::createDefaultContext();
         $customerPriceRepo = $this->container->get('customer_price.repository');
         /** @var EntitySearchResult $entities */
+
         $entities = $customerPriceRepo->search(
             (new Criteria())->addFilter(new EqualsFilter('key', '10001:12454')),
             $context
         );
+
 
         if ($entities->getTotal() !== 1) {
             $customerPriceRepo->create(
