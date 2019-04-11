@@ -18,8 +18,8 @@ before_script:
   - if [[ "$(php --version | grep -cim1 xdebug)" -ge 1 ]]; then phpenv config-rm xdebug.ini; fi
   - git clone https://github.com/shopware/development.git
   - cd development
-  - ls
-  - composer install --optimize-autoloader --no-suggest --no-scripts --prefer-dist --verbose
+  - git clone https://github.com/shopware/platform.git
+  - ./psh.phar init
 
 deploy:
   github_token: $GH_TOKEN
