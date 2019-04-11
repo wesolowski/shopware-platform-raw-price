@@ -25,7 +25,6 @@ before_script:
   - git clone https://github.com/shopware/development.git
   - cd development
   - git clone https://github.com/shopware/platform.git
-  - composer install
   - ./psh.phar init
 
 
