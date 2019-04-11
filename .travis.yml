@@ -13,13 +13,6 @@ env:
     - SHOPWARE_DIRECTORY=${HOME}/shopware
     - PLUGIN_DIRECTORY=${SHOPWARE_DIRECTORY}/custom/plugins
 
-cache:
-  directories:
-    - ${HOME}/.composer/cache/files
-
-install:
-  - composer install
-
 before_script:
   - if [[ "$(php --version | grep -cim1 xdebug)" -ge 1 ]]; then phpenv config-rm xdebug.ini; fi
   - git clone https://github.com/shopware/development.git
