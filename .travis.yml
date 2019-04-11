@@ -9,10 +9,7 @@ services:
   - mysql
 
 env:
-  matrix:
-    - SHOPWARE_VERSION="5.5"
   global:
-    - PLUGIN_NAME=FroshDataTableLayout
     - SHOPWARE_DIRECTORY=${HOME}/shopware
     - PLUGIN_DIRECTORY=${SHOPWARE_DIRECTORY}/custom/plugins
 
@@ -28,7 +25,8 @@ before_script:
   - git clone https://github.com/shopware/development.git
   - cd development
   - git clone https://github.com/shopware/platform.git
-  - php bin/setup
+  - composer install
+  - ./psh.phar init
 
 
 
