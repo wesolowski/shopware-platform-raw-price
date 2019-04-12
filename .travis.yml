@@ -33,6 +33,9 @@ before_script:
   - cp ../.psh.yaml.override ./.psh.yaml.override
   - composer install
   - ./psh.phar init
+  - APP_ENV=prod bin/console framework:demodata
+  - APP_ENV=prod bin/console dbal:refresh:index
+  - bin/console cache:clear
   - mv ../RawPrice custom/plugins/
   - php bin/console -vvv
   - php bin/console plugin:install --activate Raw\\\\CustomerPrice\\\\CustomerPrice -vvv
