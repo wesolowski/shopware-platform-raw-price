@@ -1,0 +1,45 @@
+language: php
+
+php:
+  - 7.2
+
+sudo: false
+
+services:
+  - mysql
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+env:
+  global:
+    - SHOPWARE_DIRECTORY=${HOME}/shopware
+    - PLUGIN_DIRECTORY=${SHOPWARE_DIRECTORY}/custom/plugins
+
+before_script:
+  - composer config github-oauth.github.com ${GH_TOKEN}
+  - if [[ "$(php --version | grep -cim1 xdebug)" -ge 1 ]]; then phpenv config-rm xdebug.ini; fi
+  - echo 'date.timezone = "Europe/Berlin"' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - mysql -uroot -e "CREATE USER 'app'@'%' IDENTIFIED BY 'app'"
+  - mysql -uroot -e "GRANT ALL PRIVILEGES ON *.* TO 'app'@'%' WITH GRANT OPTION"
+  - mysql -uroot -e "FLUSH PRIVILEGES"
+  - mkdir RawPrice
+  - rsync -av --progress ./* RawPrice --exclude RawPrice
+  - git clone https://github.com/shopware/development.git
+  - cd development
+  - git clone https://${GH_TOKEN}@github.com/shopware/platform.git
+  - sed -i 's/https:\/\/github.com\/shopware\/platform.git/https:\/\/${GH_TOKEN}@github.com\/shopware\/platform.git/g' composer.json
+  - cp ../.psh.yaml.override ./*
+  - composer install
+  - ./psh.phar init
+  - mv RawPrice custom/plugins/
+  - php bin/console plugin:install --activate Raw\\\\CustomerPrice\\\\CustomerPrice
+
+script:
+  - pwd
+  - ls
+
+deploy:
+  github_token: $GH_TOKEN
+
