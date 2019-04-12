@@ -12,11 +12,6 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-env:
-  global:
-    - SHOPWARE_DIRECTORY=${HOME}/shopware
-    - PLUGIN_DIRECTORY=${SHOPWARE_DIRECTORY}/custom/plugins
-
 before_script:
   - composer config github-oauth.github.com ${GH_TOKEN}
   - if [[ "$(php --version | grep -cim1 xdebug)" -ge 1 ]]; then phpenv config-rm xdebug.ini; fi
@@ -30,7 +25,10 @@ before_script:
   - cd development
   - git clone https://${GH_TOKEN}@github.com/shopware/platform.git
   - sed -i 's/https:\/\/github.com\/shopware\/platform.git/https:\/\/${GH_TOKEN}@github.com\/shopware\/platform.git/g' composer.json
-  - cp ../.psh.yaml.override ./*
+  - ls -la ../
+  - pwd
+  - ls -la
+  - cp ../.psh.yaml.override ./.psh.yaml.override
   - composer install
   - ./psh.phar init
   - mv RawPrice custom/plugins/
