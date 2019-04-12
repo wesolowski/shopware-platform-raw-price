@@ -54,7 +54,7 @@ class QueuePriceImportHandler implements MessageHandlerInterface
             /** @var CustomPriceEntity $customer */
             $customer = array_shift($elements);
 
-            if ($importData == $customer->getValue()) {
+            if ($importData !== $customer->getValue()) {
                 $customer->setValue($importData);
 
                 $customerPriceRepo->update(
