@@ -10,7 +10,7 @@ services:
 
 cache:
   directories:
-    - $HOME/.composer/cache/files
+    - $HOME/.composer/cache
 
 env:
   global:
@@ -30,6 +30,7 @@ before_script:
   - cd development
   - git clone https://${GH_TOKEN}@github.com/shopware/platform.git
   - sed -i 's/https:\/\/github.com\/shopware\/platform.git/https:\/\/${GH_TOKEN}@github.com\/shopware\/platform.git/g' composer.json
+  - cp ../.psh.yaml.override ./*
   - composer install
   - ./psh.phar init
   - mv RawPrice custom/plugins/
