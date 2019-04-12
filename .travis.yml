@@ -16,11 +16,19 @@ env:
 before_script:
   - composer config github-oauth.github.com ${GH_TOKEN}
   - if [[ "$(php --version | grep -cim1 xdebug)" -ge 1 ]]; then phpenv config-rm xdebug.ini; fi
+  - mkdir RawPrice
+  - rsync -av --progress ./* RawPrice --exclude RawPrice
   - git clone https://github.com/shopware/development.git
   - cd development
   - composer install --optimize-autoloader --no-suggest --no-scripts --prefer-dist --verbose
   - git clone https://github.com/shopware/platform.git
   - ./psh.phar init
+  - mv RawPrice custom/plugins/
+  - php bin/console plugin:install --activate Raw\\\\CustomerPrice\\\\CustomerPrice
+
+script:
+  - pwd
+  - ls
 
 deploy:
   github_token: $GH_TOKEN

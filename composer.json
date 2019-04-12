@@ -22,7 +22,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Raw\\CustomerPrice\\": "src/"
+            "Raw\\CustomerPrice\\": "src/",
+            "Raw\\CustomerPriceTest\\": "tests/"
         }
     }
 }
