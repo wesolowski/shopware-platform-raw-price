@@ -31,7 +31,7 @@ class ProductPageLoadedEvent implements EventSubscriberInterface
         $context = $productPageLoadedEvent->getContext();
         if ($context->getCustomer() instanceof CustomerEntity) {
             $customerNumber = $context->getCustomer()->getCustomerNumber();
-            $productNumber = $productPage->getProductNumber()
+            $productNumber = $productPage->getProductNumber();
         }
         dump(func_get_args(), $productPageLoadedEvent);
     }
