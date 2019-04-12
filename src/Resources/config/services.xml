@@ -33,6 +33,17 @@
         <service class="Raw\CustomerPrice\Import\Communication\Service\Redis"
                  id="raw.customer_price.import.communication.service.redis"/>
 
+        <service class="Raw\CustomerPrice\Import\Persistence\PriceImportRepository"
+                 id="raw.customer_price.import.persistence.price_import_repository">
+
+        </service>
+
+        <service class="Raw\CustomerPrice\Import\Business\Insert\PriceImportInsert"
+                 id="raw.customer_price.import.business.insert.price_import_insert">
+
+            <argument id="raw.customer_price.import.persistence.price_import_repository" type="service"/>
+        </service>
+
 
     </services>
 </container>

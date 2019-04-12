@@ -36,12 +36,5 @@ class QueuePriceImportHandler implements MessageHandlerInterface
 
     public function __invoke(QueuePriceImportMessage $importMessage)
     {
-        $importDatas = $importMessage->getImportData();
-        foreach ($importDatas as $importData) {
-            $key = $importData['customernumber'] . ':' . $importData['artnum'];
-            unset($importData['customernumber'], $importData['artnum'] );
-
-            $this->redis->set($key, json_encode($importData));
-        }
     }
 }
