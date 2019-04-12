@@ -5,9 +5,6 @@ namespace Raw\CustomerPrice\Import\Communication\Messenger\Handler;
 use Raw\CustomerPrice\Custom\CustomPriceEntity;
 use Raw\CustomerPrice\Import\Business\CustomerPriceImportFacadeInterface;
 use Raw\CustomerPrice\Import\Communication\Messenger\Message\QueuePriceImportMessage;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\EntitySearchResult;
-use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 

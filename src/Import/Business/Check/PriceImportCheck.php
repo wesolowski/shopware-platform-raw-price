@@ -5,6 +5,9 @@ namespace Raw\CustomerPrice\Import\Business\Check;
 use Raw\CustomerPrice\Import\Business\Create\PriceImportCreateInterface;
 use Raw\CustomerPrice\Import\Business\Update\PriceImportUpdateInterface;
 use Raw\CustomerPrice\Import\Communication\Messenger\Message\QueuePriceImportMessage;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 
 class PriceImportCheck implements PriceImportCheckInterface
 {
@@ -19,27 +22,34 @@ class PriceImportCheck implements PriceImportCheckInterface
     private $priceImportUpdate;
 
     /**
+     * @var ContainerInterface
+     */
+    private $container;
+
+    /**
      * PriceImportCheck constructor.
      *
      * @param PriceImportCreateInterface $priceImportCreate
      * @param PriceImportUpdateInterface $priceImportUpdate
+     * @param ContainerInterface $container
      */
     public function __construct(
         PriceImportCreateInterface $priceImportCreate,
-        PriceImportUpdateInterface $priceImportUpdate
+        PriceImportUpdateInterface $priceImportUpdate,
+        ContainerInterface $container
     ) {
         $this->priceImportCreate = $priceImportCreate;
         $this->priceImportUpdate = $priceImportUpdate;
+        $this->container = $container;
     }
-
 
     /**
      * @param QueuePriceImportMessage $importMessage
+     * @throws \Shopware\Core\Framework\DataAbstractionLayer\Exception\InconsistentCriteriaIdsException
      */
     public function checkPriceImport(QueuePriceImportMessage $importMessage)
     {
         $importData = $importMessage->getImportData();
-
 
         $context = \Shopware\Core\Framework\Context::createDefaultContext();
         $customerPriceRepo = $this->container->get('customer_price.repository');
@@ -51,30 +61,9 @@ class PriceImportCheck implements PriceImportCheckInterface
         );
 
         if ($entities->getTotal() !== 1) {
-
-
-            $customerPriceRepo->create(
-                [
-                    ['key' => '10001:12454', 'value' => $importData],
-                ],
-                \Shopware\Core\Framework\Context::createDefaultContext()
-            );
-
+            $this->priceImportCreate->createPriceImport($importData);
         } else {
-            $elements = $entities->getElements();
-            /** @var CustomPriceEntity $customer */
-            $customer = array_shift($elements);
-
-            if ($importData !== $customer->getValue()) {
-                $customer->setValue($importData);
-
-                $customerPriceRepo->update(
-                    [
-                        $customer->toArray()
-                    ],
-                    $context
-                );
-            }
+            $this->priceImportUpdate->updatePriceImport($importData, $entities, $context);
         }
     }
 }

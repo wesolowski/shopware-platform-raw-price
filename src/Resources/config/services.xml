@@ -39,6 +39,22 @@
 
         <service class="Raw\CustomerPrice\Import\Business\Check\PriceImportCheck"
                  id="raw.customer_price.import.business.check.price_import_check">
+
+            <argument type="service" id="raw.customer_price.import.business.create.price_import_create"/>
+            <argument type="service" id="raw.customer_price.import.business.update.price_import_update"/>
+            <argument type="service" id="service_container"/>
+        </service>
+
+        <service class="Raw\CustomerPrice\Import\Business\Create\PriceImportCreate"
+                 id="raw.customer_price.import.business.create.price_import_create">
+
+            <argument id="service_container" type="service"/>
+        </service>
+
+        <service class="Raw\CustomerPrice\Import\Business\Update\PriceImportUpdate"
+                 id="raw.customer_price.import.business.update.price_import_update">
+
+            <argument type="service" id="service_container"/>
         </service>
 
 

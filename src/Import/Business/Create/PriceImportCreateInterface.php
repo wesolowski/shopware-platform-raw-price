@@ -4,6 +4,5 @@ namespace Raw\CustomerPrice\Import\Business\Create;
 
 interface PriceImportCreateInterface
 {
-
-    public function createPriceImport();
+    public function createPriceImport(array $importData);
 }
