@@ -38,17 +38,21 @@ class PriceImport extends Command
         for ($artNum = 1; $artNum <= 1000; $artNum++) {
             for ($customerNumber = 1; $customerNumber <= 1000; $customerNumber++) {
                 $price = rand(1, 9900) / 100;
-                $this->message[] = ['qu' => 1, 'price' => $price, 'artnum' => $artNum, 'customernumber' => $customerNumber];
+                $this->message[] = [
+                    'qu' => 1,
+                    'price' => $price,
+                    'artnum' => $artNum,
+                    'customernumber' => $customerNumber
+                ];
                 $this->sendMessage();
             }
         }
 
-        if(!empty($this->message)) {
-            $this->messageBus->dispatch(new QueuePriceImportMessage($this->message));
+        if (!empty($this->message)) {
+            $this->messageBus->dispatch(
+                new QueuePriceImportMessage($this->message)
+            );
         }
-
-
-        $output->writeln('customer price processes...');
     }
 
     private function sendMessage()
