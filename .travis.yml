@@ -1,12 +1,6 @@
 language: php
 
-addons:
-  apt:
-    sources:
-      - mysql-5.7-trusty
-    packages:
-      - mysql-server
-      - mysql-client
+dist: xenial
 
 php:
   - 7.2
