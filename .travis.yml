@@ -21,6 +21,7 @@ before_script:
   - git clone https://github.com/shopware/development.git
   - cd development
   - git clone https://${GH_TOKEN}@github.com/shopware/platform.git
+  - sed -i 's/https:\/\/github.com\/shopware\/platform.git/https:\/\/${GH_TOKEN}@github.com\/shopware\/platform.git/g' composer.json
   - composer install
   - ./psh.phar init
   - mv RawPrice custom/plugins/
