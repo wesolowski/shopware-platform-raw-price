@@ -2,14 +2,6 @@ language: php
 
 dist: xenial
 
-addons:
-  apt:
-    sources:
-      - mysql-5.7-trusty
-    packages:
-      - mysql-server
-      - mysql-client
-
 php:
   - 7.2
 
@@ -41,7 +33,7 @@ before_script:
   - cp ../.psh.yaml.override ./.psh.yaml.override
   - composer install
   - ./psh.phar init
-  - mv RawPrice custom/plugins/
+  - mv ../RawPrice custom/plugins/
   - php bin/console plugin:install --activate Raw\\\\CustomerPrice\\\\CustomerPrice
 
 script:
