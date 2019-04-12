@@ -1,6 +1,6 @@
 <?php
 
-namespace Raw\CustomerPrice\Import\Persistence;
+namespace Raw\CustomerPrice\Persistence\Redis\Repository;
 
 interface PriceImportRepositoryInterface
 {

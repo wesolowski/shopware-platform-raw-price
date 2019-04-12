@@ -54,7 +54,7 @@ class ProductPageLoadedEvent implements EventSubscriberInterface
             $customerNumber = $context->getCustomer()->getCustomerNumber();
             $productNumber = $productPage->getProductNumber();
 
-            $priceInfo = json_decode($this->redis->get($customerNumber, $productNumber), true);
+            $priceInfo = json_decode((string)$this->redis->get($customerNumber, $productNumber), true);
 
             if (!empty($priceInfo)) {
                 $price = (float)$priceInfo['price'];

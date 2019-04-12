@@ -1,11 +1,13 @@
 <?php
 
-namespace Raw\CustomerPrice\Import\Persistence;
+namespace Raw\CustomerPrice\Persistence\Redis\Repository;
 
 class PriceImportRepository implements PriceImportRepositoryInterface
 {
+    /**
+     * @var \Redis
+     */
     private $redis;
-
 
     private $cache = [];
 
@@ -30,8 +32,8 @@ class PriceImportRepository implements PriceImportRepositoryInterface
         }
     }
 
-    public function get($customerNumber, $productNumber)
+    public function get($key)
     {
-        return $this->redis->get($customerNumber  . ':' . $productNumber);
+        return $this->redis->get($key);
     }
 }
