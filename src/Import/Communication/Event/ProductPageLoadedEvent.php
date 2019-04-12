@@ -4,6 +4,7 @@
 namespace Raw\CustomerPrice\Import\Communication\Event;
 
 use Raw\CustomerPrice\Custom\CustomPriceEntity;
+use Raw\CustomerPrice\Import\Communication\Service\Redis;
 use Shopware\Core\Checkout\Cart\Price\Struct\CalculatedPrice;
 use Shopware\Core\Checkout\Cart\Tax\Struct\CalculatedTaxCollection;
 use Shopware\Core\Checkout\Cart\Tax\Struct\TaxRuleCollection;
@@ -24,18 +25,17 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class ProductPageLoadedEvent implements EventSubscriberInterface
 {
     /**
-     * @var EntityRepositoryInterface
+     * @var Redis
      */
-    private $customerPriceRepo;
+    private $redis;
 
     /**
-     * @param $customerPriceRepo
+     * @param Redis $redis
      */
-    public function __construct(EntityRepositoryInterface $customerPriceRepo)
+    public function __construct(Redis $redis)
     {
-        $this->customerPriceRepo = $customerPriceRepo;
+        $this->redis = $redis;
     }
-
 
     public static function getSubscribedEvents()
     {
@@ -50,36 +50,28 @@ class ProductPageLoadedEvent implements EventSubscriberInterface
         /** @var SalesChannelContext $context */
         $context = $productPageLoadedEvent->getSalesChannelContext();
         if ($context instanceof SalesChannelContext && $context->getCustomer() instanceof CustomerEntity) {
+
             $customerNumber = $context->getCustomer()->getCustomerNumber();
             $productNumber = $productPage->getProductNumber();
 
-            $entities = $this->customerPriceRepo->search(
-                (new Criteria())->addFilter(new EqualsFilter('key', $customerNumber . ':' . $productNumber)),
-                $context->getContext()
-            );
+            $priceInfo = json_decode($this->redis->get($customerNumber, $productNumber), true);
 
-            if ($entities->getTotal() === 1) {
-                $elements = $entities->getElements();
-                /** @var CustomPriceEntity $customer */
-                $customer = array_shift($elements);
-                $price = (float)$customer->getValue()[0]['price'];
+            if (!empty($priceInfo)) {
+                $price = (float)$priceInfo['price'];
                 $calculatedPrice = new CalculatedPrice(
                     $price,
                     $price,
                     new CalculatedTaxCollection(),
                     new TaxRuleCollection(),
-                    $customer->getValue()[0]['qu']
+                    $priceInfo['qu']
                 );
-
                 $productPage->setCalculatedListingPrice($calculatedPrice);
                 $productPage->setCalculatedPrice($calculatedPrice);
                 $productPage->setPrice(
                     new Price($price, $price, false)
                 );
             }
-
         }
-        dump(func_get_args(), $productPageLoadedEvent);
     }
 
 }

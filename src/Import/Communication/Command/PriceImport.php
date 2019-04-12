@@ -29,12 +29,35 @@ class PriceImport extends Command
         $this->setName('raw:customer-price:import');
     }
 
+    private $message = [];
+
+    private $i = 0;
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $importData = [['qu' => 1, 'price' => 12.20]];
+        for ($artNum = 1; $artNum <= 1000; $artNum++) {
+            for ($customerNumber = 1; $customerNumber <= 1000; $customerNumber++) {
+                $price = rand(1, 9900) / 100;
+                $this->message[] = ['qu' => 1, 'price' => $price, 'artnum' => $artNum, 'customernumber' => $customerNumber];
+                $this->sendMessage();
+            }
+        }
 
-        $this->messageBus->dispatch(new QueuePriceImportMessage($importData));
+        if(!empty($this->message)) {
+            $this->messageBus->dispatch(new QueuePriceImportMessage($this->message));
+        }
+
 
         $output->writeln('customer price processes...');
+    }
+
+    private function sendMessage()
+    {
+        $this->i++;
+        if ($this->i > 1000) {
+            $this->messageBus->dispatch(new QueuePriceImportMessage($this->message));
+            $this->i = 0;
+            $this->message = [];
+        }
     }
 }
