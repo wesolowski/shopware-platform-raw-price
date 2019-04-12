@@ -20,8 +20,8 @@ before_script:
   - rsync -av --progress ./* RawPrice --exclude RawPrice
   - git clone https://github.com/shopware/development.git
   - cd development
+  - git clone https://${GH_TOKEN}@github.com/shopware/platform.git
   - composer install
-  - git clone https://github.com/shopware/platform.git
   - ./psh.phar init
   - mv RawPrice custom/plugins/
   - php bin/console plugin:install --activate Raw\\\\CustomerPrice\\\\CustomerPrice
