@@ -20,7 +20,7 @@ before_script:
   - rsync -av --progress ./* RawPrice --exclude RawPrice
   - git clone https://github.com/shopware/development.git
   - cd development
-  - composer install --optimize-autoloader --no-suggest --no-scripts --prefer-dist --verbose
+  - composer install
   - git clone https://github.com/shopware/platform.git
   - ./psh.phar init
   - mv RawPrice custom/plugins/
