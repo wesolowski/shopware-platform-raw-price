@@ -11,9 +11,10 @@
 
         <service class="Raw\CustomerPrice\Import\Communication\Command\PriceImport"
                  id="raw.customer_price.import.communication.command.price_import">
-            <tag name="console.command"/>
-            <argument type="service" id="service_container"/>
+
             <argument type="service" id="messenger.bus.shopware"/>
+
+            <tag name="console.command"/>
         </service>
 
         <service class="Raw\CustomerPrice\Import\Communication\Event\ProductPageLoadedEvent"
@@ -25,7 +26,9 @@
         <service class="Raw\CustomerPrice\Import\Communication\Messenger\Handler\QueuePriceImportHandler"
                  id="raw.customer_price.import.communication.messenger.handler.queue_price_import_handler">
 
-                <tag name="messenger.message_handler"/>
+            <argument type="service" id="service_container"/>
+
+            <tag name="messenger.message_handler"/>
         </service>
 
     </services>
